@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terryberry.DataProtection.MongoDb", "Terryberry.DataProtection.MongoDb\Terryberry.DataProtection.MongoDb.csproj", "{EB556F32-2277-4B7B-BFFC-B7A0850090AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{E7E53547-9E3A-47DD-8DCA-609BD88E325C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB556F32-2277-4B7B-BFFC-B7A0850090AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB556F32-2277-4B7B-BFFC-B7A0850090AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB556F32-2277-4B7B-BFFC-B7A0850090AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB556F32-2277-4B7B-BFFC-B7A0850090AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E53547-9E3A-47DD-8DCA-609BD88E325C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E53547-9E3A-47DD-8DCA-609BD88E325C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E53547-9E3A-47DD-8DCA-609BD88E325C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E53547-9E3A-47DD-8DCA-609BD88E325C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E4B6988-E529-47AA-A3AE-E46B2EEDB39C}
+	EndGlobalSection
+EndGlobal
