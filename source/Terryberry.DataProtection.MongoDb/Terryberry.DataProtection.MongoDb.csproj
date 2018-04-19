@@ -6,11 +6,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>1.0.0.0</Version>
-    <Authors>Matthew DeJonge</Authors>
     <Description>Data Protection APIs for persisting anti-forgery keys to MongoDb.</Description>
-    <Copyright>Terryberry 2018</Copyright>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <Authors>Matthew DeJonge</Authors>
     <Company>Terryberry</Company>
+    <Copyright>Terryberry 2018</Copyright>
+    <PackageProjectUrl>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
