@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terryberry.DataProtection.MongoDb", "Terryberry.DataProtection.MongoDb\Terryberry.DataProtection.MongoDb.csproj", "{EB556F32-2277-4B7B-BFFC-B7A0850090AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terryberry.DataProtection.MongoDb", "source\Terryberry.DataProtection.MongoDb.csproj", "{EB556F32-2277-4B7B-BFFC-B7A0850090AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{E7E53547-9E3A-47DD-8DCA-609BD88E325C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terryberry.DataProtection.MongoDb.Tests", "tests\Terryberry.DataProtection.MongoDb.Tests.csproj", "{E7E53547-9E3A-47DD-8DCA-609BD88E325C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 # Terryberry.DataProtection.MongoDb
 
-Data Protection APIs for persisting anti-forgery keys to MongoDb.
+Data Protection APIs for persisting keys to MongoDb.
 
 ## Basic Useage
 
@@ -9,9 +9,25 @@ public void ConfigureServices(IServiceCollection services)
 {
     services.AddDataProtection()
         .SetApplicationName("MyApplication")
-        .PersistKeysToMongoDb("mongodb://localhost:27017/", "KeyDatabase", "KeyCollection");
+        .PersistKeysToMongoDb("mongodb://localhost:27017/", "KeyDatabase", "KeyCollection")
+        .AddKeyCleanup();
 }
 ```
+
+### Release Notes
+
+#### 1.0.0
+
+* XML Repository for MongoDb.
+* Data protection builders for MongoDb key persistence.
+
+#### 2.0.0
+
+* Improved key cleanup.
+* Key cleanup is now an opt-in service (see basic useage).
+* If you are upgrading from 1.0.0 existing keys may be removed prior to being revoked.
+  * This should not be a problem if your keys are being automatically generated.
+  * This can be avoided by adding a KeyId field (string) with the value of the id attribute of the xml key.
 
 ### Open Source Licenses
 
@@ -25,3 +41,7 @@ public void ConfigureServices(IServiceCollection services)
 #### MongoDb.Driver
 
 <http://www.apache.org/licenses/LICENSE-2.0>
+
+#### xunit
+
+<https://raw.githubusercontent.com/xunit/xunit/master/license.txt>
