@@ -27,7 +27,7 @@ public void ConfigureServices(IServiceCollection services)
 * Key cleanup is now an opt-in service (see basic useage).
 * If you are upgrading from 1.0.0 existing keys may be removed prior to being revoked.
   * This should not be a problem if your keys are being automatically generated.
-  * This can be avoided by adding a KeyId field (string) with the value of the id attribute of the xml key.
+  * This can be avoided by adding a KeyId field (string) to each document with the value of the id attribute of the xml key.
 
 ### Open Source Licenses
 
