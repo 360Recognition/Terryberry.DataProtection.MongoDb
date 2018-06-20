@@ -1,4 +1,8 @@
-﻿namespace Terryberry.DataProtection.MongoDb
+﻿// Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.cs
+// By Matthew DeJonge
+// Email: mhdejong@umich.edu
+
+namespace Terryberry.DataProtection.MongoDb
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +18,9 @@
     public class MongoDbXmlRepository : IXmlRepository
     {
         /// <summary>
-        /// The name of the id attribute on the keys being inserted.
+        /// The name of the id attribute on the keys.
         /// </summary>
-        private readonly string _idName;
+        private const string Id = "id";
 
         /// <summary>
         /// The collection to store keys in.
@@ -29,30 +33,34 @@
         private IKeyManager _keyManager;
 
         /// <summary>
-        /// Initializes a <see cref="MongoDbXmlRepository" /> with keys stored in the specified MongoDb collection.
+        /// Initializes a <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
         /// </summary>
         /// <param name="keys">Collection used to store the keys.</param>
-        /// <param name="idName">The name of the id attribute on the keys being inserted. Must be on the top level element.</param>
-        public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keys, string idName)
+        public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keys)
         {
             _keys = keys;
-            _idName = idName;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets all top-level XML elements in the repository.
+        /// </summary>
         public IReadOnlyCollection<XElement> GetAllElements()
         {
             return _keys.Find(Builders<MongoDbXmlKey>.Filter.Empty).ToList().Select(key => key.XmlKey).ToList().AsReadOnly();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Adds a top-level XML element to the repository.
+        /// </summary>
+        /// <param name="element">The element to add.</param>
+        /// <param name="friendlyName">Not used.</param>
         public void StoreElement(XElement element, string friendlyName)
         {
             RemoveRevokedKeys();
             _keys.InsertOne(new MongoDbXmlKey
             {
                 XmlKey = element,
-                KeyId = element.Attribute(_idName)?.Value
+                KeyId = element.Attribute(Id)?.Value
             });
         }
 
@@ -72,7 +80,7 @@
         {
             if (_keyManager is null) return;
             var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked).Select(key => key.KeyId.ToString());
-            _keys.DeleteMany(Builders<MongoDbXmlKey>.Filter.Not(Builders<MongoDbXmlKey>.Filter.In(key => key.KeyId, activeKeys)));
+            _keys.DeleteMany(Builders<MongoDbXmlKey>.Filter.Nin(key => key.KeyId, activeKeys));
         }
     }
 }

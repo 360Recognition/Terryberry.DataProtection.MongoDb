@@ -1,4 +1,8 @@
-﻿namespace Terryberry.DataProtection.MongoDb.Tests
+﻿// Terryberry.DataProtection.MongoDb.Tests.TestBase.cs
+// By Matthew DeJonge
+// Email: mhdejong@umich.edu
+
+namespace Terryberry.DataProtection.MongoDb.Tests
 {
     using System.Xml.Linq;
     using MongoDB.Bson;

@@ -29,6 +29,12 @@ public void ConfigureServices(IServiceCollection services)
   * This should not be a problem if your keys are being automatically generated.
   * This can be avoided by adding a KeyId field (string) to each document with the value of the id attribute of the xml key.
 
+#### 2.0.1
+
+* Documentation updates.
+* Minor performance improvements.
+* Key cleanup now requires an id attribute on the top level element of keys (this is the default behavior).
+
 ### Open Source Licenses
 
 #### Microsoft Frameworks and Libraries

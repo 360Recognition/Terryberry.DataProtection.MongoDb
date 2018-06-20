@@ -1,4 +1,8 @@
-﻿namespace Terryberry.DataProtection.MongoDb
+﻿// Terryberry.DataProtection.MongoDb.MongoDbXmlKey.cs
+// By Matthew DeJonge
+// Email: mhdejong@umich.edu
+
+namespace Terryberry.DataProtection.MongoDb
 {
     using System.Xml.Linq;
     using MongoDB.Bson;
@@ -26,7 +30,7 @@
         public string KeyId { get; set; }
 
         /// <summary>
-        /// The key as an <see cref="XElement" />.
+        /// The key as an <see cref="XElement"/>.
         /// </summary>
         [BsonIgnore]
         public XElement XmlKey

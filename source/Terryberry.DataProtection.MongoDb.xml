@@ -6,15 +6,10 @@
     <members>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions">
             <summary>
-            Contains MongoDb-specific extension methods for modifying a <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder" />.
+            Contains MongoDb-specific extension methods for modifying a <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/>.
             </summary>
         </member>
-        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.Id">
-            <summary>
-            Default id name.
-            </summary>
-        </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,System.String,System.String,System.String,System.String)">
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,System.String,System.String,System.String)">
             <summary>
             Configures the data protection system to persist keys to the specified database and collection in MongoDb.
             </summary>
@@ -22,37 +17,37 @@
             <param name="connectionString">MongoDb connection url.</param>
             <param name="databaseName">Database used to store the key list.</param>
             <param name="collectionName">Collection used to store the key list.</param>
-            <param name="idName">The name of the id attribute on the keys being inserted. Must be on the top level element.</param>
-            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder" /> after this operation has completed.</returns>
+            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
         </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoDatabase,System.String,System.String)">
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoDatabase,System.String)">
             <summary>
             Configures the data protection system to persist keys to the specified database and collection in MongoDb.
             </summary>
             <param name="builder">The builder instance to modify.</param>
             <param name="database">Database used to store the key list.</param>
             <param name="collectionName">Collection used to store the key list.</param>
-            <param name="idName">The name of the id attribute on the keys being inserted. Must be on the top level element.</param>
-            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder" /> after this operation has completed.</returns>
+            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
         </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey},System.String)">
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
             <summary>
             Configures the data protection system to persist keys to the specified database and collection in MongoDb.
             </summary>
             <param name="builder">The builder instance to modify.</param>
             <param name="collection">Collection used to store the key list.</param>
-            <param name="idName">The name of the id attribute on the keys being inserted. Must be on the top level element.</param>
-            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder" /> after this operation has completed.</returns>
+            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.AddKeyCleanup(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder)">
             <summary>
-            Removes keys from the MongoDb repository after they expire or are revoked. If a custom key manager is used, it must be configured before calling this method.
+            Removes keys from the MongoDb repository after they expire or are revoked.
             </summary>
             <param name="builder">The builder instance to modify.</param>
-            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder" /> after this operation has completed.</returns>
+            <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
             <exception cref="T:System.InvalidOperationException">PersistKeysToMongoDb must be called before this method.</exception>
             <remarks>
-            Cleanup will run after this method is called, and whenever the key manager calls <see cref="M:Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository.StoreElement(System.Xml.Linq.XElement,System.String)" />.
+            Cleanup will run after this method is called, and whenever the key manager calls <see cref="M:Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository.StoreElement(System.Xml.Linq.XElement,System.String)"/>.
+            </remarks>
+            <remarks>
+            If a custom key manager is used, it must be configured before calling this method and keys must have an "id" attribute on the top level element.
             </remarks>
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlKey">
@@ -77,7 +72,7 @@
         </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.XmlKey">
             <summary>
-            The key as an <see cref="T:System.Xml.Linq.XElement" />.
+            The key as an <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository">
@@ -85,9 +80,9 @@
             An xml repository backed by MongoDb.
             </summary>
         </member>
-        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._idName">
+        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.Id">
             <summary>
-            The name of the id attribute on the keys being inserted.
+            The name of the id attribute on the keys.
             </summary>
         </member>
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._keys">
@@ -100,18 +95,23 @@
             The key manager this app uses.
             </summary>
         </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.#ctor(MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey},System.String)">
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.#ctor(MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
             <summary>
-            Initializes a <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository" /> with keys stored in the specified MongoDb collection.
+            Initializes a <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
             </summary>
             <param name="keys">Collection used to store the keys.</param>
-            <param name="idName">The name of the id attribute on the keys being inserted. Must be on the top level element.</param>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.GetAllElements">
-            <inheritdoc />
+            <summary>
+            Gets all top-level XML elements in the repository.
+            </summary>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.StoreElement(System.Xml.Linq.XElement,System.String)">
-            <inheritdoc />
+            <summary>
+            Adds a top-level XML element to the repository.
+            </summary>
+            <param name="element">The element to add.</param>
+            <param name="friendlyName">Not used.</param>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.SetKeyManager(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager)">
             <summary>

@@ -1,3 +1,7 @@
+// Terryberry.DataProtection.MongoDb.Tests.KeyCollectionTests.cs
+// By Matthew DeJonge
+// Email: mhdejong@umich.edu
+
 namespace Terryberry.DataProtection.MongoDb.Tests
 {
     using System;
@@ -20,7 +24,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
 
             var count = InsertKeys(key => InsertKey(ObjectId.GenerateNewId(), key.ToString(SaveOptions.DisableFormatting)));
 
-            var repository = new MongoDbXmlRepository(KeyCollection, IdName);
+            var repository = new MongoDbXmlRepository(KeyCollection);
 
             var allElements = repository.GetAllElements().ToList();
 
@@ -34,7 +38,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         [Fact]
         public void TestStoreElement()
         {
-            var repository = new MongoDbXmlRepository(KeyCollection, IdName);
+            var repository = new MongoDbXmlRepository(KeyCollection);
 
             var count = InsertKeys(key => repository.StoreElement(key, null));
 
