@@ -42,29 +42,6 @@ namespace Terryberry.DataProtection.MongoDb
         }
 
         /// <summary>
-        /// Gets all top-level XML elements in the repository.
-        /// </summary>
-        public IReadOnlyCollection<XElement> GetAllElements()
-        {
-            return _keys.Find(Builders<MongoDbXmlKey>.Filter.Empty).ToList().Select(key => key.XmlKey).ToList().AsReadOnly();
-        }
-
-        /// <summary>
-        /// Adds a top-level XML element to the repository.
-        /// </summary>
-        /// <param name="element">The element to add.</param>
-        /// <param name="friendlyName">Not used.</param>
-        public void StoreElement(XElement element, string friendlyName)
-        {
-            RemoveRevokedKeys();
-            _keys.InsertOne(new MongoDbXmlKey
-            {
-                XmlKey = element,
-                KeyId = element.Attribute(Id)?.Value
-            });
-        }
-
-        /// <summary>
         /// Sets the key manager for cleanup.
         /// </summary>
         internal void SetKeyManager(IKeyManager keyManager)
@@ -81,6 +58,29 @@ namespace Terryberry.DataProtection.MongoDb
             if (_keyManager is null) return;
             var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked).Select(key => key.KeyId.ToString());
             _keys.DeleteMany(Builders<MongoDbXmlKey>.Filter.Nin(key => key.KeyId, activeKeys));
+        }
+
+        /// <summary>
+        /// Gets all top-level XML elements in the repository.
+        /// </summary>
+        public IReadOnlyCollection<XElement> GetAllElements()
+        {
+            return _keys.Find(Builders<MongoDbXmlKey>.Filter.Empty).ToList().Select(key => key.XmlKey).ToList().AsReadOnly();
+        }
+
+        /// <summary>
+        /// Adds a top-level XML element to the repository.
+        /// </summary>
+        /// <param name="element">The element to add.</param>
+        /// <param name="friendlyName">A friendly name provided by the key mananger. Not used in this method.</param>
+        public void StoreElement(XElement element, string friendlyName)
+        {
+            RemoveRevokedKeys();
+            _keys.InsertOne(new MongoDbXmlKey
+            {
+                XmlKey = element,
+                KeyId = element.Attribute(Id)?.Value
+            });
         }
     }
 }

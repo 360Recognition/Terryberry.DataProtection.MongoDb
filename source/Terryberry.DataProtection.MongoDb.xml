@@ -101,6 +101,16 @@
             </summary>
             <param name="keys">Collection used to store the keys.</param>
         </member>
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.SetKeyManager(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager)">
+            <summary>
+            Sets the key manager for cleanup.
+            </summary>
+        </member>
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.RemoveRevokedKeys">
+            <summary>
+            Removes expired and revoked keys from the repository.
+            </summary>
+        </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.GetAllElements">
             <summary>
             Gets all top-level XML elements in the repository.
@@ -111,17 +121,7 @@
             Adds a top-level XML element to the repository.
             </summary>
             <param name="element">The element to add.</param>
-            <param name="friendlyName">Not used.</param>
-        </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.SetKeyManager(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager)">
-            <summary>
-            Sets the key manager for cleanup.
-            </summary>
-        </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.RemoveRevokedKeys">
-            <summary>
-            Removes expired and revoked keys from the repository.
-            </summary>
+            <param name="friendlyName">A friendly name provided by the key mananger. Not used in this method.</param>
         </member>
     </members>
 </doc>
