@@ -1,0 +1,17 @@
+{
+   "version": "0.2.0",
+   "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/tests/bin/Debug/netcoreapp2.1/Terryberry.DataProtection.MongoDb.Tests.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/tests",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
