@@ -5,6 +5,8 @@
 namespace Terryberry.DataProtection.MongoDb.Tests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.Linq;
     using MongoDB.Bson;
     using MongoDB.Driver;
@@ -17,56 +19,55 @@ namespace Terryberry.DataProtection.MongoDb.Tests
 
         public KeyCollectionTests() : base(nameof(KeyCollectionTests), nameof(KeyCollectionTests)) { }
 
-        [Fact]
-        public void TestGetAllElements()
+        [Theory]
+        [MemberData(nameof(GenerateKeys))]
+        public void TestGetAllElements(List<XElement> keys)
         {
-            var id = ObjectId.GenerateNewId();
+            var mongodbKeys = keys.Select(key => new MongoDbXmlKey
+            {
+                Id = ObjectId.GenerateNewId(),
+                Key = key.ToString(SaveOptions.DisableFormatting),
+                KeyId = key.Attribute(IdName)?.Value
+            }).ToList();
 
-            KeyCollection.InsertOne(new MongoDbXmlKey { Id = id, Key = Key, KeyId = XElement.Parse(Key).Attribute(IdName)?.Value });
-
-            var count = GenerateKeys(key => KeyCollection.InsertOne(new MongoDbXmlKey { Key = key.ToString(SaveOptions.DisableFormatting), KeyId = key.Attribute(IdName)?.Value }));
+            KeyCollection.InsertMany(mongodbKeys);
 
             var repository = new MongoDbXmlRepository(KeyCollection);
 
             var allElements = repository.GetAllElements();
 
-            Assert.Equal(count + 1, allElements.Count);
+            Assert.Equal(keys.Count, allElements.Count);
 
             Assert.Single(allElements, element => element.ToString(SaveOptions.DisableFormatting) == Key);
 
-            Assert.Single(KeyCollection.Find(document => document.Id == id).ToEnumerable());
+            Assert.Single(KeyCollection.Find(document => document.Id == mongodbKeys.First().Id).ToEnumerable());
         }
 
-        [Fact]
-        public void TestStoreElement()
+        [Theory]
+        [MemberData(nameof(GenerateKeys))]
+        public void TestStoreElement(List<XElement> keys)
         {
             var repository = new MongoDbXmlRepository(KeyCollection);
 
-            var count = GenerateKeys(key => repository.StoreElement(key, null));
-
-            repository.StoreElement(XElement.Parse(Key), null);
+            foreach (var key in keys) repository.StoreElement(key, null);
 
             var allDocuments = KeyCollection.Find(FilterDefinition<MongoDbXmlKey>.Empty).ToList();
 
-            Assert.Equal(count + 1, allDocuments.Count);
+            Assert.Equal(keys.Count, allDocuments.Count);
 
             Assert.Single(allDocuments, document => document.Key == Key);
         }
-
-        private static int GenerateKeys(Action<XElement> insertKey)
+        
+        public static IEnumerable<object[]> GenerateKeys()
         {
-            var random = new Random();
-
-            var count = random.Next(5, 20);
-
-            for (var i = 0; i < count; i++)
+            var keys = new List<XElement> { XElement.Parse(Key) };
+            for (var i = 0; i < new Random().Next(5, 20); i++)
             {
                 var key = XElement.Parse(Key);
                 key.SetAttributeValue(IdName, Guid.NewGuid());
-                insertKey(key);
+                keys.Add(key);
             }
-
-            return count;
+            yield return new object[] { keys };
         }
     }
 }

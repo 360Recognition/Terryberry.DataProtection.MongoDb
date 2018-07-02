@@ -20,6 +20,28 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         public PersistKeysTests() : base(Database, Collection) { }
 
         [Fact]
+        public void PersistKeysToMongoDb()
+        {
+            var services = new ServiceCollection();
+            services.AddDataProtection()
+                .PersistKeysToMongoDb("mongodb://localhost:27017", Database, Collection)
+                .AddKeyCleanup()
+                .SetApplicationName(ApplicationName);
+
+            var serviceProvider = services.BuildServiceProvider();
+            var keyManager = serviceProvider.GetService<IKeyManager>();
+
+            var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+
+            var allKeys = keyManager.GetAllKeys();
+            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
+
+            Assert.Contains(key.KeyId, allKeyIds);
+            Assert.Equal(2, allKeys.Count);
+        }
+
+        [Fact]
         public void ExpiredKeyDoesNotGetRemoved()
         {
             var services = new ServiceCollection();
@@ -60,28 +82,6 @@ namespace Terryberry.DataProtection.MongoDb.Tests
 
             Assert.DoesNotContain(key.KeyId, allKeyIds);
             Assert.Equal(1, allKeys.Count);
-        }
-
-        [Fact]
-        public void PersistKeysToMongoDb()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                .PersistKeysToMongoDb("mongodb://localhost:27017", Database, Collection)
-                .AddKeyCleanup()
-                .SetApplicationName(ApplicationName);
-
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
-
-            var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
-
-            Assert.Contains(key.KeyId, allKeyIds);
-            Assert.Equal(2, allKeys.Count);
         }
 
         [Fact]
