@@ -1,7 +1,3 @@
-// Terryberry.DataProtection.MongoDb.Tests.PersistKeysTests.cs
-// By Matthew DeJonge
-// Email: mhdejong@umich.edu
-
 namespace Terryberry.DataProtection.MongoDb.Tests
 {
     using System;

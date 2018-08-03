@@ -2,7 +2,7 @@
 
 Data Protection APIs for persisting keys to MongoDb.
 
-## Basic Useage
+## Basic Usage
 
 ```cs
 public void ConfigureServices(IServiceCollection services)
@@ -24,7 +24,7 @@ public void ConfigureServices(IServiceCollection services)
 #### 2.0.0
 
 * Improved key cleanup.
-* Key cleanup is now an opt-in service (see basic useage).
+* Key cleanup is now an opt-in service (see basic usage).
 * If you are upgrading from 1.0.0 existing keys may be removed prior to being revoked.
   * This should not be a problem if your keys are being automatically generated.
   * This can be avoided by adding a KeyId field (string) to each document with the value of the id attribute of the xml key.

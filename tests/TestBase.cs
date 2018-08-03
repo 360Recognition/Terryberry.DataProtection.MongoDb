@@ -1,8 +1,4 @@
-﻿// Terryberry.DataProtection.MongoDb.Tests.TestBase.cs
-// By Matthew DeJonge
-// Email: mhdejong@umich.edu
-
-namespace Terryberry.DataProtection.MongoDb.Tests
+﻿namespace Terryberry.DataProtection.MongoDb.Tests
 {
     using System;
     using MongoDB.Driver;

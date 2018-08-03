@@ -1,8 +1,4 @@
-﻿// Terryberry.DataProtection.MongoDb.MongoDbXmlKey.cs
-// By Matthew DeJonge
-// Email: mhdejong@umich.edu
-
-namespace Terryberry.DataProtection.MongoDb
+﻿namespace Terryberry.DataProtection.MongoDb
 {
     using System.Xml.Linq;
     using MongoDB.Bson;

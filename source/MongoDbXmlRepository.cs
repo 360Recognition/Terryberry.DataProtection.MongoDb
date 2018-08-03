@@ -1,8 +1,4 @@
-﻿// Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.cs
-// By Matthew DeJonge
-// Email: mhdejong@umich.edu
-
-namespace Terryberry.DataProtection.MongoDb
+﻿namespace Terryberry.DataProtection.MongoDb
 {
     using System;
     using System.Collections.Generic;
@@ -18,11 +14,6 @@ namespace Terryberry.DataProtection.MongoDb
     public class MongoDbXmlRepository : IXmlRepository
     {
         /// <summary>
-        /// The name of the id attribute on the keys.
-        /// </summary>
-        private const string Id = "id";
-
-        /// <summary>
         /// The collection to store keys in.
         /// </summary>
         private readonly IMongoCollection<MongoDbXmlKey> _keys;
@@ -31,6 +22,11 @@ namespace Terryberry.DataProtection.MongoDb
         /// The key manager this app uses.
         /// </summary>
         private IKeyManager _keyManager;
+
+        /// <summary>
+        /// The name of the id attribute on the keys.
+        /// </summary>
+        private const string Id = "id";
 
         /// <summary>
         /// Initializes a <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.

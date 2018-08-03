@@ -1,8 +1,4 @@
-﻿// Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.cs
-// By Matthew DeJonge
-// Email: mhdejong@umich.edu
-
-namespace Terryberry.DataProtection.MongoDb
+﻿namespace Terryberry.DataProtection.MongoDb
 {
     using System;
     using Microsoft.AspNetCore.DataProtection;

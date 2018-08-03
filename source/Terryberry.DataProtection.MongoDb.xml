@@ -80,11 +80,6 @@
             An xml repository backed by MongoDb.
             </summary>
         </member>
-        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.Id">
-            <summary>
-            The name of the id attribute on the keys.
-            </summary>
-        </member>
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._keys">
             <summary>
             The collection to store keys in.
@@ -93,6 +88,11 @@
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._keyManager">
             <summary>
             The key manager this app uses.
+            </summary>
+        </member>
+        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.Id">
+            <summary>
+            The name of the id attribute on the keys.
             </summary>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.#ctor(MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
