@@ -7,7 +7,7 @@
     {
         protected TestBase(string database, string collection)
         {
-            KeyCollection = new MongoClient("mongodb://localhost:27017").GetDatabase(database).GetCollection<MongoDbXmlKey>(collection);
+            KeyCollection = new MongoClient().GetDatabase(database).GetCollection<MongoDbXmlKey>(collection);
         }
 
         protected IMongoCollection<MongoDbXmlKey> KeyCollection { get; }

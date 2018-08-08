@@ -35,6 +35,10 @@ public void ConfigureServices(IServiceCollection services)
 * Minor performance improvements.
 * Key cleanup now requires an id attribute on the top level element of keys (this is the default behavior).
 
+#### 2.0.2
+
+* Minor performance improvements.
+
 ### Open Source Licenses
 
 #### Microsoft Frameworks and Libraries

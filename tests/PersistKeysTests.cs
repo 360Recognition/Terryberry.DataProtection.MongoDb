@@ -20,9 +20,9 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         {
             var services = new ServiceCollection();
             services.AddDataProtection()
-                .PersistKeysToMongoDb("mongodb://localhost:27017", Database, Collection)
-                .AddKeyCleanup()
-                .SetApplicationName(ApplicationName);
+                    .PersistKeysToMongoDb("mongodb://localhost:27017", Database, Collection)
+                    .AddKeyCleanup()
+                    .SetApplicationName(ApplicationName);
 
             var serviceProvider = services.BuildServiceProvider();
             var keyManager = serviceProvider.GetService<IKeyManager>();
@@ -42,8 +42,8 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         {
             var services = new ServiceCollection();
             services.AddDataProtection()
-                .PersistKeysToMongoDb(KeyCollection)
-                .SetApplicationName(ApplicationName);
+                    .PersistKeysToMongoDb(KeyCollection)
+                    .SetApplicationName(ApplicationName);
 
             var serviceProvider = services.BuildServiceProvider();
             var keyManager = serviceProvider.GetService<IKeyManager>();
@@ -63,9 +63,9 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         {
             var services = new ServiceCollection();
             services.AddDataProtection()
-                .PersistKeysToMongoDb(KeyCollection)
-                .AddKeyCleanup()
-                .SetApplicationName(ApplicationName);
+                    .PersistKeysToMongoDb(KeyCollection)
+                    .AddKeyCleanup()
+                    .SetApplicationName(ApplicationName);
 
             var serviceProvider = services.BuildServiceProvider();
             var keyManager = serviceProvider.GetService<IKeyManager>();
@@ -85,8 +85,8 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         {
             var services = new ServiceCollection();
             services.AddDataProtection()
-                .PersistKeysToMongoDb(KeyCollection)
-                .SetApplicationName(ApplicationName);
+                    .PersistKeysToMongoDb(KeyCollection)
+                    .SetApplicationName(ApplicationName);
 
             var serviceProvider = services.BuildServiceProvider();
             var keyManager = serviceProvider.GetService<IKeyManager>();
@@ -108,9 +108,9 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         {
             var services = new ServiceCollection();
             services.AddDataProtection()
-                .PersistKeysToMongoDb(KeyCollection.Database, Collection)
-                .AddKeyCleanup()
-                .SetApplicationName(ApplicationName);
+                    .PersistKeysToMongoDb(KeyCollection.Database, Collection)
+                    .AddKeyCleanup()
+                    .SetApplicationName(ApplicationName);
 
             var serviceProvider = services.BuildServiceProvider();
             var keyManager = serviceProvider.GetService<IKeyManager>();

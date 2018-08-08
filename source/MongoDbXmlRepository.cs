@@ -7,12 +7,18 @@
     using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.AspNetCore.DataProtection.Repositories;
     using MongoDB.Driver;
+    using static MongoDB.Driver.Builders<MongoDbXmlKey>;
 
     /// <summary>
     /// An xml repository backed by MongoDb.
     /// </summary>
     public class MongoDbXmlRepository : IXmlRepository
     {
+        /// <summary>
+        /// The name of the id attribute on the keys.
+        /// </summary>
+        private const string Id = "id";
+
         /// <summary>
         /// The collection to store keys in.
         /// </summary>
@@ -22,11 +28,6 @@
         /// The key manager this app uses.
         /// </summary>
         private IKeyManager _keyManager;
-
-        /// <summary>
-        /// The name of the id attribute on the keys.
-        /// </summary>
-        private const string Id = "id";
 
         /// <summary>
         /// Initializes a <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
@@ -40,6 +41,7 @@
         /// <summary>
         /// Sets the key manager for cleanup.
         /// </summary>
+        /// <param name="keyManager">The <see cref="IKeyManager"/>.</param>
         internal void SetKeyManager(IKeyManager keyManager)
         {
             _keyManager = keyManager;
@@ -53,7 +55,7 @@
         {
             if (_keyManager is null) return;
             var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked).Select(key => key.KeyId.ToString());
-            _keys.DeleteMany(Builders<MongoDbXmlKey>.Filter.Nin(key => key.KeyId, activeKeys));
+            _keys.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys));
         }
 
         /// <summary>
@@ -61,7 +63,7 @@
         /// </summary>
         public IReadOnlyCollection<XElement> GetAllElements()
         {
-            return _keys.Find(Builders<MongoDbXmlKey>.Filter.Empty).ToList().Select(key => key.XmlKey).ToList().AsReadOnly();
+            return _keys.Find(Filter.Empty).ToList().Select(key => key.XmlKey).ToList();
         }
 
         /// <summary>
