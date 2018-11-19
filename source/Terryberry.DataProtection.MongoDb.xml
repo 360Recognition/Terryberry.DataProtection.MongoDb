@@ -55,9 +55,25 @@
             Wraps the xml key in an object that can be stored in MongoDb.
             </summary>
         </member>
+        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.IdAttribute">
+            <summary>
+            The name of the id attribute on the keys.
+            </summary>
+        </member>
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlKey"/>.
+            </summary>
+        </member>
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.#ctor(System.Xml.Linq.XElement)">
+            <summary>
+            Initializes a new instance of <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlKey"/> with the specified XML key.
+            </summary>
+            <param name="element">XML data protection key.</param>
+        </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.Id">
             <summary>
-            MongoDb _id field.
+            MongoDB _id field.
             </summary>
         </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.Key">
@@ -70,19 +86,14 @@
             The id from the xml key.
             </summary>
         </member>
-        <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.XmlKey">
+        <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.ToXElement">
             <summary>
-            The key as an <see cref="T:System.Xml.Linq.XElement"/>.
+            Parses this key as an <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository">
             <summary>
             An xml repository backed by MongoDb.
-            </summary>
-        </member>
-        <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.Id">
-            <summary>
-            The name of the id attribute on the keys.
             </summary>
         </member>
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._keys">
@@ -97,7 +108,7 @@
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.#ctor(MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
             <summary>
-            Initializes a <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
+            Initializes a new instance <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
             </summary>
             <param name="keys">Collection used to store the keys.</param>
         </member>
@@ -122,7 +133,7 @@
             Adds a top-level XML element to the repository.
             </summary>
             <param name="element">The element to add.</param>
-            <param name="friendlyName">A friendly name provided by the key mananger. Not used in this method.</param>
+            <param name="friendlyName">A friendly name provided by the key manager. Not used in this method.</param>
         </member>
     </members>
 </doc>

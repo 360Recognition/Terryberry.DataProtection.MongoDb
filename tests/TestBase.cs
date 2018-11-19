@@ -5,9 +5,9 @@
 
     public abstract class TestBase : IDisposable
     {
-        protected TestBase(string database, string collection)
+        protected TestBase(string name)
         {
-            KeyCollection = new MongoClient().GetDatabase(database).GetCollection<MongoDbXmlKey>(collection);
+            KeyCollection = new MongoClient().GetDatabase(name).GetCollection<MongoDbXmlKey>(name);
         }
 
         protected IMongoCollection<MongoDbXmlKey> KeyCollection { get; }

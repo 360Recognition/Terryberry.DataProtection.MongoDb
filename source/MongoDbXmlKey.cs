@@ -10,13 +10,35 @@
     public class MongoDbXmlKey
     {
         /// <summary>
-        /// MongoDb _id field.
+        /// The name of the id attribute on the keys.
         /// </summary>
+        private const string IdAttribute = "id";
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="MongoDbXmlKey"/>.
+        /// </summary>
+        public MongoDbXmlKey() { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="MongoDbXmlKey"/> with the specified XML key.
+        /// </summary>
+        /// <param name="element">XML data protection key.</param>
+        internal MongoDbXmlKey(XElement element)
+        {
+            Key = element.ToString(SaveOptions.DisableFormatting);
+            KeyId = element.Attribute(IdAttribute)?.Value;
+        }
+
+        /// <summary>
+        /// MongoDB _id field.
+        /// </summary>
+        [BsonId]
         public ObjectId Id { get; set; }
 
         /// <summary>
         /// The key xml in string form.
         /// </summary>
+        [BsonRequired]
         public string Key { get; set; }
 
         /// <summary>
@@ -26,13 +48,9 @@
         public string KeyId { get; set; }
 
         /// <summary>
-        /// The key as an <see cref="XElement"/>.
+        /// Parses this key as an <see cref="XElement"/>.
         /// </summary>
         [BsonIgnore]
-        public XElement XmlKey
-        {
-            get => XElement.Parse(Key);
-            set => Key = value.ToString(SaveOptions.DisableFormatting);
-        }
+        internal XElement ToXElement => XElement.Parse(Key);
     }
 }

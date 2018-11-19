@@ -15,11 +15,6 @@
     public class MongoDbXmlRepository : IXmlRepository
     {
         /// <summary>
-        /// The name of the id attribute on the keys.
-        /// </summary>
-        private const string Id = "id";
-
-        /// <summary>
         /// The collection to store keys in.
         /// </summary>
         private readonly IMongoCollection<MongoDbXmlKey> _keys;
@@ -30,7 +25,7 @@
         private IKeyManager _keyManager;
 
         /// <summary>
-        /// Initializes a <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
+        /// Initializes a new instance <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
         /// </summary>
         /// <param name="keys">Collection used to store the keys.</param>
         public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keys)
@@ -54,8 +49,8 @@
         private void RemoveRevokedKeys()
         {
             if (_keyManager is null) return;
-            var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked).Select(key => key.KeyId.ToString());
-            _keys.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys));
+            var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked);
+            _keys.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys.Select(key => key.KeyId.ToString())));
         }
 
         /// <summary>
@@ -63,22 +58,18 @@
         /// </summary>
         public IReadOnlyCollection<XElement> GetAllElements()
         {
-            return _keys.Find(Filter.Empty).ToList().Select(key => key.XmlKey).ToList();
+            return _keys.Find(Filter.Empty).ToList().Select(key => key.ToXElement).ToList();
         }
 
         /// <summary>
         /// Adds a top-level XML element to the repository.
         /// </summary>
         /// <param name="element">The element to add.</param>
-        /// <param name="friendlyName">A friendly name provided by the key mananger. Not used in this method.</param>
+        /// <param name="friendlyName">A friendly name provided by the key manager. Not used in this method.</param>
         public void StoreElement(XElement element, string friendlyName)
         {
             RemoveRevokedKeys();
-            _keys.InsertOne(new MongoDbXmlKey
-            {
-                XmlKey = element,
-                KeyId = element.Attribute(Id)?.Value
-            });
+            _keys.InsertOne(new MongoDbXmlKey(element));
         }
     }
 }

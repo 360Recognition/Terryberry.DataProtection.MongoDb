@@ -13,7 +13,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         private const string IdName = "id";
         private const string Key = "<key id=\"3e44a364-9c6c-4b30-8c79-8ecfca124943\" version=\"1\"><creationDate>2018-04-12T15:15:54.9879433Z</creationDate><activationDate>2018-04-12T15:15:54.805328Z</activationDate><expirationDate>9999-12-31T00:00:00.00Z</expirationDate><descriptor deserializerType=\"Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60\"><descriptor><encryption algorithm=\"AES_256_CBC\" /><validation algorithm=\"HMACSHA256\" /><masterKey p4:requiresEncryption=\"true\" xmlns:p4=\"http://schemas.asp.net/2015/03/dataProtection\"><!-- Warning: the key below is in an unencrypted form. --><value>cBH6uO232L1JDUAX1VeFu+xBDd2uUqAv26pUA8fMtEpKN5PlVunICbq2uKEkmWirHoXgc1g1afojJ7hYoKJiiw==</value></masterKey></descriptor></descriptor></key>";
 
-        public KeyCollectionTests() : base(nameof(KeyCollectionTests), nameof(KeyCollectionTests)) { }
+        public KeyCollectionTests() : base(nameof(KeyCollectionTests)) { }
 
         public static IEnumerable<object[]> GenerateKeys()
         {
@@ -24,7 +24,6 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                 key.SetAttributeValue(IdName, Guid.NewGuid());
                 keys.Add(key);
             }
-
             yield return new object[] { keys };
         }
 
@@ -38,17 +37,11 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                 Key = key.ToString(SaveOptions.DisableFormatting),
                 KeyId = key.Attribute(IdName)?.Value
             }).ToList();
-
             KeyCollection.InsertMany(mongodbKeys);
-
             var repository = new MongoDbXmlRepository(KeyCollection);
-
             var allElements = repository.GetAllElements();
-
             Assert.Equal(keys.Count, allElements.Count);
-
             Assert.Single(allElements, element => element.ToString(SaveOptions.DisableFormatting) == Key);
-
             Assert.Single(KeyCollection.Find(document => document.Id == mongodbKeys.First().Id).ToEnumerable());
         }
 
@@ -57,13 +50,9 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         public void TestStoreElement(List<XElement> keys)
         {
             var repository = new MongoDbXmlRepository(KeyCollection);
-
             foreach (var key in keys) repository.StoreElement(key, null);
-
             var allDocuments = KeyCollection.Find(FilterDefinition<MongoDbXmlKey>.Empty).ToList();
-
             Assert.Equal(keys.Count, allDocuments.Count);
-
             Assert.Single(allDocuments, document => document.Key == Key);
         }
     }

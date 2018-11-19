@@ -1,6 +1,6 @@
 # Terryberry.DataProtection.MongoDb
 
-Data Protection APIs for persisting keys to MongoDb.
+Data Protection APIs for persisting keys to MongoDB.
 
 ## Basic Usage
 
@@ -18,8 +18,8 @@ public void ConfigureServices(IServiceCollection services)
 
 #### 1.0.0
 
-* XML Repository for MongoDb.
-* Data protection builders for MongoDb key persistence.
+* XML Repository for MongoDB.
+* Data protection builders for MongoDB key persistence.
 
 #### 2.0.0
 
@@ -37,7 +37,9 @@ public void ConfigureServices(IServiceCollection services)
 
 #### 2.0.2
 
+* Documentation updates.
 * Minor performance improvements.
+* MongoDB.Driver version increment.
 
 ### Open Source Licenses
 
@@ -48,7 +50,7 @@ public void ConfigureServices(IServiceCollection services)
 <https://raw.githubusercontent.com/aspnet/Home/2.0.0/LICENSE.txt>\
 <http://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm>
 
-#### MongoDb.Driver
+#### MongoDB.Driver
 
 <http://www.apache.org/licenses/LICENSE-2.0>
 
