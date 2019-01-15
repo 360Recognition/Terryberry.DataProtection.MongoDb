@@ -50,7 +50,10 @@ namespace Terryberry.DataProtection.MongoDb.Tests
         public void TestStoreElement(List<XElement> keys)
         {
             var repository = new MongoDbXmlRepository(KeyCollection);
-            foreach (var key in keys) repository.StoreElement(key, null);
+            foreach (var key in keys)
+            {
+                repository.StoreElement(key, null);
+            }
             var allDocuments = KeyCollection.Find(FilterDefinition<MongoDbXmlKey>.Empty).ToList();
             Assert.Equal(keys.Count, allDocuments.Count);
             Assert.Single(allDocuments, document => document.Key == Key);

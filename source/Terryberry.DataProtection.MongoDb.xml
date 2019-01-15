@@ -6,22 +6,22 @@
     <members>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions">
             <summary>
-            Contains MongoDb-specific extension methods for modifying a <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/>.
+            Contains MongoDB-specific extension methods for modifying a <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/>.
             </summary>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,System.String,System.String,System.String)">
             <summary>
-            Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+            Configures the data protection system to persist keys to the specified database and collection in MongoDB.
             </summary>
             <param name="builder">The builder instance to modify.</param>
-            <param name="connectionString">MongoDb connection url.</param>
+            <param name="connectionString">MongoDB connection url.</param>
             <param name="databaseName">Database used to store the key list.</param>
             <param name="collectionName">Collection used to store the key list.</param>
             <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoDatabase,System.String)">
             <summary>
-            Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+            Configures the data protection system to persist keys to the specified database and collection in MongoDB.
             </summary>
             <param name="builder">The builder instance to modify.</param>
             <param name="database">Database used to store the key list.</param>
@@ -30,7 +30,7 @@
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.PersistKeysToMongoDb(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
             <summary>
-            Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+            Configures the data protection system to persist keys to the specified database and collection in MongoDB.
             </summary>
             <param name="builder">The builder instance to modify.</param>
             <param name="collection">Collection used to store the key list.</param>
@@ -38,7 +38,7 @@
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.AddKeyCleanup(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder)">
             <summary>
-            Removes keys from the MongoDb repository after they expire or are revoked.
+            Removes keys from the MongoDB repository after they expire or are revoked.
             </summary>
             <param name="builder">The builder instance to modify.</param>
             <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
@@ -52,7 +52,7 @@
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlKey">
             <summary>
-            Wraps the xml key in an object that can be stored in MongoDb.
+            Wraps the XML key in an object that can be stored in MongoDB.
             </summary>
         </member>
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.IdAttribute">
@@ -78,12 +78,12 @@
         </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.Key">
             <summary>
-            The key xml in string form.
+            The key XML in string form.
             </summary>
         </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.KeyId">
             <summary>
-            The id from the xml key.
+            The id from the XML key.
             </summary>
         </member>
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.ToXElement">
@@ -93,7 +93,7 @@
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository">
             <summary>
-            An xml repository backed by MongoDb.
+            An XML repository backed by MongoDB.
             </summary>
         </member>
         <member name="F:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository._keys">
@@ -108,7 +108,7 @@
         </member>
         <member name="M:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository.#ctor(MongoDB.Driver.IMongoCollection{Terryberry.DataProtection.MongoDb.MongoDbXmlKey})">
             <summary>
-            Initializes a new instance <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
+            Initializes a new instance <see cref="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository"/> with keys stored in the specified MongoDB collection.
             </summary>
             <param name="keys">Collection used to store the keys.</param>
         </member>

@@ -5,7 +5,7 @@
     using MongoDB.Bson.Serialization.Attributes;
 
     /// <summary>
-    /// Wraps the xml key in an object that can be stored in MongoDb.
+    /// Wraps the XML key in an object that can be stored in MongoDB.
     /// </summary>
     public class MongoDbXmlKey
     {
@@ -36,13 +36,13 @@
         public ObjectId Id { get; set; }
 
         /// <summary>
-        /// The key xml in string form.
+        /// The key XML in string form.
         /// </summary>
         [BsonRequired]
         public string Key { get; set; }
 
         /// <summary>
-        /// The id from the xml key.
+        /// The id from the XML key.
         /// </summary>
         [BsonIgnoreIfDefault]
         public string KeyId { get; set; }

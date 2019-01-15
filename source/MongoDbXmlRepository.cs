@@ -10,7 +10,7 @@
     using static MongoDB.Driver.Builders<MongoDbXmlKey>;
 
     /// <summary>
-    /// An xml repository backed by MongoDb.
+    /// An XML repository backed by MongoDB.
     /// </summary>
     public class MongoDbXmlRepository : IXmlRepository
     {
@@ -25,7 +25,7 @@
         private IKeyManager _keyManager;
 
         /// <summary>
-        /// Initializes a new instance <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDb collection.
+        /// Initializes a new instance <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDB collection.
         /// </summary>
         /// <param name="keys">Collection used to store the keys.</param>
         public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keys)
@@ -48,7 +48,10 @@
         /// </summary>
         private void RemoveRevokedKeys()
         {
-            if (_keyManager is null) return;
+            if (_keyManager is null)
+            {
+                return;
+            }
             var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate > DateTimeOffset.Now && !key.IsRevoked);
             _keys.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys.Select(key => key.KeyId.ToString())));
         }

@@ -7,15 +7,15 @@
     using MongoDB.Driver;
 
     /// <summary>
-    /// Contains MongoDb-specific extension methods for modifying a <see cref="IDataProtectionBuilder"/>.
+    /// Contains MongoDB-specific extension methods for modifying a <see cref="IDataProtectionBuilder"/>.
     /// </summary>
     public static class MongoDbDataProtectionBuilderExtensions
     {
         /// <summary>
-        /// Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+        /// Configures the data protection system to persist keys to the specified database and collection in MongoDB.
         /// </summary>
         /// <param name="builder">The builder instance to modify.</param>
-        /// <param name="connectionString">MongoDb connection url.</param>
+        /// <param name="connectionString">MongoDB connection url.</param>
         /// <param name="databaseName">Database used to store the key list.</param>
         /// <param name="collectionName">Collection used to store the key list.</param>
         /// <returns>A reference to the <see cref="IDataProtectionBuilder"/> after this operation has completed.</returns>
@@ -25,7 +25,7 @@
         }
 
         /// <summary>
-        /// Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+        /// Configures the data protection system to persist keys to the specified database and collection in MongoDB.
         /// </summary>
         /// <param name="builder">The builder instance to modify.</param>
         /// <param name="database">Database used to store the key list.</param>
@@ -33,20 +33,29 @@
         /// <returns>A reference to the <see cref="IDataProtectionBuilder"/> after this operation has completed.</returns>
         public static IDataProtectionBuilder PersistKeysToMongoDb(this IDataProtectionBuilder builder, IMongoDatabase database, string collectionName)
         {
-            if (database is null) throw new ArgumentNullException(nameof(database));
+            if (database is null)
+            {
+                throw new ArgumentNullException(nameof(database));
+            }
             return builder.PersistKeysToMongoDb(database.GetCollection<MongoDbXmlKey>(collectionName));
         }
 
         /// <summary>
-        /// Configures the data protection system to persist keys to the specified database and collection in MongoDb.
+        /// Configures the data protection system to persist keys to the specified database and collection in MongoDB.
         /// </summary>
         /// <param name="builder">The builder instance to modify.</param>
         /// <param name="collection">Collection used to store the key list.</param>
         /// <returns>A reference to the <see cref="IDataProtectionBuilder"/> after this operation has completed.</returns>
         public static IDataProtectionBuilder PersistKeysToMongoDb(this IDataProtectionBuilder builder, IMongoCollection<MongoDbXmlKey> collection)
         {
-            if (builder is null) throw new ArgumentNullException(nameof(builder));
-            if (collection is null) throw new ArgumentNullException(nameof(collection));
+            if (builder is null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+            if (collection is null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
             builder.Services.Configure<KeyManagementOptions>(options =>
             {
                 var mongoDbXmlRepository = new MongoDbXmlRepository(collection);
@@ -56,7 +65,7 @@
         }
 
         /// <summary>
-        /// Removes keys from the MongoDb repository after they expire or are revoked.
+        /// Removes keys from the MongoDB repository after they expire or are revoked.
         /// </summary>
         /// <param name="builder">The builder instance to modify.</param>
         /// <returns>A reference to the <see cref="IDataProtectionBuilder"/> after this operation has completed.</returns>
@@ -69,12 +78,20 @@
         /// </remarks>
         public static IDataProtectionBuilder AddKeyCleanup(this IDataProtectionBuilder builder)
         {
-            if (builder is null) throw new ArgumentNullException(nameof(builder));
-            var keyManager = builder.Services.BuildServiceProvider().GetService<IKeyManager>();
+            if (builder is null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
             builder.Services.Configure<KeyManagementOptions>(options =>
             {
-                if (options.XmlRepository is MongoDbXmlRepository mongodbXmlRepository) mongodbXmlRepository.SetKeyManager(keyManager);
-                else throw new InvalidOperationException($"{nameof(PersistKeysToMongoDb)} must be called before {nameof(AddKeyCleanup)}.");
+                if (options.XmlRepository is MongoDbXmlRepository mongodbXmlRepository)
+                {
+                    mongodbXmlRepository.SetKeyManager(builder.Services.BuildServiceProvider().GetService<IKeyManager>());
+                }
+                else
+                {
+                    throw new InvalidOperationException($"{nameof(PersistKeysToMongoDb)} must be called before {nameof(AddKeyCleanup)}.");
+                }
             });
             return builder;
         }
