@@ -37,6 +37,7 @@
             {
                 throw new ArgumentNullException(nameof(database));
             }
+
             return builder.PersistKeysToMongoDb(database.GetCollection<MongoDbXmlKey>(collectionName));
         }
 
@@ -52,15 +53,18 @@
             {
                 throw new ArgumentNullException(nameof(builder));
             }
+
             if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
+
             builder.Services.Configure<KeyManagementOptions>(options =>
             {
                 var mongoDbXmlRepository = new MongoDbXmlRepository(collection);
                 options.XmlRepository = mongoDbXmlRepository;
             });
+
             return builder;
         }
 
@@ -82,17 +86,21 @@
             {
                 throw new ArgumentNullException(nameof(builder));
             }
+
+            var keyManager = builder.Services.BuildServiceProvider().GetService<IKeyManager>();
+
             builder.Services.Configure<KeyManagementOptions>(options =>
             {
                 if (options.XmlRepository is MongoDbXmlRepository mongodbXmlRepository)
                 {
-                    mongodbXmlRepository.SetKeyManager(builder.Services.BuildServiceProvider().GetService<IKeyManager>());
+                    mongodbXmlRepository.SetKeyManager(keyManager);
                 }
                 else
                 {
                     throw new InvalidOperationException($"{nameof(PersistKeysToMongoDb)} must be called before {nameof(AddKeyCleanup)}.");
                 }
             });
+
             return builder;
         }
     }
