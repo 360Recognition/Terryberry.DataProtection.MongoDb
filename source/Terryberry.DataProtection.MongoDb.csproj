@@ -6,12 +6,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.0.2</Version>
-    <Description>Data Protection APIs for persisting keys to MongoDb.</Description>
+    <Description>Data Protection APIs for persisting keys to MongoDB.</Description>
     <Authors>Matthew DeJonge</Authors>
     <Company>Terryberry</Company>
     <Copyright>Terryberry</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageReleaseNotes>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb/blob/master/README.md</PackageReleaseNotes>
     <PackageTags>dataprotection, mongodb</PackageTags>
     <DocumentationFile>Terryberry.DataProtection.MongoDb.xml</DocumentationFile>
@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.8.0" />
   </ItemGroup>
 
 </Project>
