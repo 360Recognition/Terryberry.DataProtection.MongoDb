@@ -12,7 +12,6 @@
     <Copyright>Terryberry</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb/blob/master/README.md</PackageReleaseNotes>
     <PackageTags>dataprotection, mongodb</PackageTags>
     <DocumentationFile>Terryberry.DataProtection.MongoDb.xml</DocumentationFile>
   </PropertyGroup>
