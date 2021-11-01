@@ -3,7 +3,6 @@ namespace Terryberry.DataProtection.MongoDb.Tests
     using System;
     using System.Linq;
     using Microsoft.AspNetCore.DataProtection;
-    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
@@ -23,7 +22,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                     .SetApplicationName(Name);
 
             var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
+            var keyManager = serviceProvider.GetKeyManager();
 
             var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
             keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
@@ -44,7 +43,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                     .SetApplicationName(Name);
 
             var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
+            var keyManager = serviceProvider.GetKeyManager();
 
             var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
             keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
@@ -66,7 +65,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                     .SetApplicationName(Name);
 
             var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
+            var keyManager = serviceProvider.GetKeyManager();
 
             var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
             keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
@@ -87,7 +86,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                     .SetApplicationName(Name);
 
             var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
+            var keyManager = serviceProvider.GetKeyManager();
 
             var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
             keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
@@ -111,7 +110,7 @@ namespace Terryberry.DataProtection.MongoDb.Tests
                     .SetApplicationName(Name);
 
             var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetService<IKeyManager>();
+            var keyManager = serviceProvider.GetKeyManager();
 
             var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
             keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
