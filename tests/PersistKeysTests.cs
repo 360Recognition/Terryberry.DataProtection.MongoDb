@@ -1,126 +1,125 @@
-namespace Terryberry.DataProtection.MongoDb.Tests
+﻿namespace Terryberry.DataProtection.MongoDb.Tests;
+
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+public class PersistKeysTests : TestBase
 {
-    using System;
-    using System.Linq;
-    using Microsoft.AspNetCore.DataProtection;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
+    private const string Name = nameof(PersistKeysTests);
 
-    public class PersistKeysTests : TestBase
+    public PersistKeysTests() : base(Name) { }
+
+    [Fact]
+    public void PersistKeysToMongoDb()
     {
-        private const string Name = nameof(PersistKeysTests);
+        var services = new ServiceCollection();
+        services.AddDataProtection()
+                .PersistKeysToMongoDb("mongodb://localhost:27017", Name, Name)
+                .AddKeyCleanup()
+                .SetApplicationName(Name);
 
-        public PersistKeysTests() : base(Name) { }
+        var serviceProvider = services.BuildServiceProvider();
+        var keyManager = serviceProvider.GetKeyManager();
 
-        [Fact]
-        public void PersistKeysToMongoDb()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                    .PersistKeysToMongoDb("mongodb://localhost:27017", Name, Name)
-                    .AddKeyCleanup()
-                    .SetApplicationName(Name);
+        var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetKeyManager();
+        var allKeys = keyManager.GetAllKeys();
+        var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
 
-            var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        Assert.Contains(key.KeyId, allKeyIds);
+        Assert.Equal(2, allKeys.Count);
+    }
 
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
+    [Fact]
+    public void ExpiredKeyDoesNotGetRemoved()
+    {
+        var services = new ServiceCollection();
+        services.AddDataProtection()
+                .PersistKeysToMongoDb(KeyCollection)
+                .SetApplicationName(Name);
 
-            Assert.Contains(key.KeyId, allKeyIds);
-            Assert.Equal(2, allKeys.Count);
-        }
+        var serviceProvider = services.BuildServiceProvider();
+        var keyManager = serviceProvider.GetKeyManager();
 
-        [Fact]
-        public void ExpiredKeyDoesNotGetRemoved()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                    .PersistKeysToMongoDb(KeyCollection)
-                    .SetApplicationName(Name);
+        var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
+        keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetKeyManager();
+        var allKeys = keyManager.GetAllKeys();
+        var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
 
-            var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
-            keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
+        Assert.Contains(key.KeyId, allKeyIds);
+        Assert.Equal(2, allKeys.Count);
+    }
 
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
+    [Fact]
+    public void ExpiredKeyGetsRemoved()
+    {
+        var services = new ServiceCollection();
+        services.AddDataProtection()
+                .PersistKeysToMongoDb(KeyCollection)
+                .AddKeyCleanup()
+                .SetApplicationName(Name);
 
-            Assert.Contains(key.KeyId, allKeyIds);
-            Assert.Equal(2, allKeys.Count);
-        }
+        var serviceProvider = services.BuildServiceProvider();
+        var keyManager = serviceProvider.GetKeyManager();
 
-        [Fact]
-        public void ExpiredKeyGetsRemoved()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                    .PersistKeysToMongoDb(KeyCollection)
-                    .AddKeyCleanup()
-                    .SetApplicationName(Name);
+        var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
+        keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetKeyManager();
+        var allKeys = keyManager.GetAllKeys();
+        var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
 
-            var key = keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MinValue);
-            keyManager.CreateNewKey(DateTimeOffset.Now, DateTimeOffset.MaxValue);
+        Assert.DoesNotContain(key.KeyId, allKeyIds);
+        Assert.Equal(1, allKeys.Count);
+    }
 
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
+    [Fact]
+    public void RevokedKeyDoesNotGetRemoved()
+    {
+        var services = new ServiceCollection();
+        services.AddDataProtection()
+                .PersistKeysToMongoDb(KeyCollection)
+                .SetApplicationName(Name);
 
-            Assert.DoesNotContain(key.KeyId, allKeyIds);
-            Assert.Equal(1, allKeys.Count);
-        }
+        var serviceProvider = services.BuildServiceProvider();
+        var keyManager = serviceProvider.GetKeyManager();
 
-        [Fact]
-        public void RevokedKeyDoesNotGetRemoved()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                    .PersistKeysToMongoDb(KeyCollection)
-                    .SetApplicationName(Name);
+        var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
+        keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetKeyManager();
+        var allKeys = keyManager.GetAllKeys();
+        var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
 
-            var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-            keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
-            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        Assert.Contains(key.KeyId, allKeyIds);
+        Assert.Equal(3, allKeys.Count);
+    }
 
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
+    [Fact]
+    public void RevokedKeyGetsRemoved()
+    {
+        var services = new ServiceCollection();
+        services.AddDataProtection()
+                .PersistKeysToMongoDb(KeyCollection.Database, Name)
+                .AddKeyCleanup()
+                .SetApplicationName(Name);
 
-            Assert.Contains(key.KeyId, allKeyIds);
-            Assert.Equal(3, allKeys.Count);
-        }
+        var serviceProvider = services.BuildServiceProvider();
+        var keyManager = serviceProvider.GetKeyManager();
 
-        [Fact]
-        public void RevokedKeyGetsRemoved()
-        {
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                    .PersistKeysToMongoDb(KeyCollection.Database, Name)
-                    .AddKeyCleanup()
-                    .SetApplicationName(Name);
+        var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+        keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
+        keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var keyManager = serviceProvider.GetKeyManager();
+        var allKeys = keyManager.GetAllKeys();
+        var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
 
-            var key = keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-            keyManager.RevokeAllKeys(DateTimeOffset.MaxValue);
-            keyManager.CreateNewKey(DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-
-            var allKeys = keyManager.GetAllKeys();
-            var allKeyIds = allKeys.Select(k => k.KeyId).ToList();
-
-            Assert.DoesNotContain(key.KeyId, allKeyIds);
-            Assert.Equal(1, allKeys.Count);
-        }
+        Assert.DoesNotContain(key.KeyId, allKeyIds);
+        Assert.Equal(1, allKeys.Count);
     }
 }

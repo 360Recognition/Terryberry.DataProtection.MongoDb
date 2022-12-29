@@ -36,11 +36,12 @@
             <param name="collection">Collection used to store the key list.</param>
             <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
         </member>
-        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.AddKeyCleanup(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder)">
+        <member name="M:Terryberry.DataProtection.MongoDb.MongoDbDataProtectionBuilderExtensions.AddKeyCleanup(Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder,Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager)">
             <summary>
             Removes keys from the MongoDB repository after they expire or are revoked.
             </summary>
             <param name="builder">The builder instance to modify.</param>
+            <param name="keyManager">Optional: <see cref="T:Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager"/> to use. Default is whatever key manager is currently registered at the time this method is called.</param>
             <returns>A reference to the <see cref="T:Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder"/> after this operation has completed.</returns>
             <exception cref="T:System.InvalidOperationException">PersistKeysToMongoDb must be called before this method.</exception>
             <remarks>
@@ -84,11 +85,6 @@
         <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.KeyId">
             <summary>
             The id from the XML key.
-            </summary>
-        </member>
-        <member name="P:Terryberry.DataProtection.MongoDb.MongoDbXmlKey.ToXElement">
-            <summary>
-            Parses this key as an <see cref="T:System.Xml.Linq.XElement"/>.
             </summary>
         </member>
         <member name="T:Terryberry.DataProtection.MongoDb.MongoDbXmlRepository">
