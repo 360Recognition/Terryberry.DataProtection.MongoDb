@@ -38,7 +38,7 @@ public class KeyCollectionTests : TestBase
             KeyId = key.Attribute(IdName)?.Value
         }).ToList();
         KeyCollection.InsertMany(mongodbKeys);
-        var repository = new MongoDbXmlRepository(KeyCollection);
+        var repository = new MongoDbXmlRepository(KeyCollection, null);
         var allElements = repository.GetAllElements();
         Assert.Equal(keys.Count, allElements.Count);
         Assert.Single(allElements, element => element.ToString(SaveOptions.DisableFormatting) == Key);
@@ -49,7 +49,7 @@ public class KeyCollectionTests : TestBase
     [MemberData(nameof(GenerateKeys))]
     public void TestStoreElement(List<XElement> keys)
     {
-        var repository = new MongoDbXmlRepository(KeyCollection);
+        var repository = new MongoDbXmlRepository(KeyCollection, null);
         foreach (var key in keys)
         {
             repository.StoreElement(key, null);

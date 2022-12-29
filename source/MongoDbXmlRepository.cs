@@ -17,30 +17,35 @@ public class MongoDbXmlRepository : IXmlRepository
     /// <summary>
     /// The collection to store keys in.
     /// </summary>
-    private readonly IMongoCollection<MongoDbXmlKey> _keys;
+    private readonly IMongoCollection<MongoDbXmlKey> _keyCollection;
 
     /// <summary>
-    /// The key manager this app uses.
+    /// Factory function for getting the key manager.
     /// </summary>
-    private IKeyManager _keyManager;
+    private readonly Func<IKeyManager> _keyManagerFactory;
+
+    /// <summary>
+    /// Flag for enabling or disabling expired and revoked keys.
+    /// </summary>
+    private bool _cleanupKeys;
 
     /// <summary>
     /// Initializes a new instance <see cref="MongoDbXmlRepository"/> with keys stored in the specified MongoDB collection.
     /// </summary>
-    /// <param name="keys">Collection used to store the keys.</param>
-    public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keys)
+    /// <param name="keyCollection">Collection used to store the keys.</param>
+    /// <param name="keyManagerFactory">Factory for the <see cref="IKeyManager"/>.</param>
+    public MongoDbXmlRepository(IMongoCollection<MongoDbXmlKey> keyCollection, Func<IKeyManager> keyManagerFactory)
     {
-        _keys = keys;
+        _keyCollection = keyCollection;
+        _keyManagerFactory = keyManagerFactory;
     }
 
     /// <summary>
-    /// Sets the key manager for cleanup.
+    /// Enables key cleanup.
     /// </summary>
-    /// <param name="keyManager">The <see cref="IKeyManager"/>.</param>
-    internal void SetKeyManager(IKeyManager keyManager)
+    internal void EnableKeyCleanup()
     {
-        _keyManager = keyManager;
-        RemoveRevokedKeys();
+        _cleanupKeys = true;
     }
 
     /// <summary>
@@ -48,12 +53,12 @@ public class MongoDbXmlRepository : IXmlRepository
     /// </summary>
     private void RemoveRevokedKeys()
     {
-        if (_keyManager is null)
+        if (_cleanupKeys)
         {
-            return;
+            var keyManager = _keyManagerFactory();
+            var activeKeys = keyManager.GetAllKeys().Where(key => key.ExpirationDate.ToUniversalTime() > DateTimeOffset.UtcNow && !key.IsRevoked);
+            _keyCollection.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys.Select(key => key.KeyId.ToString())));
         }
-        var activeKeys = _keyManager.GetAllKeys().Where(key => key.ExpirationDate.ToUniversalTime() > DateTimeOffset.UtcNow && !key.IsRevoked);
-        _keys.DeleteMany(Filter.Nin(key => key.KeyId, activeKeys.Select(key => key.KeyId.ToString())));
     }
 
     /// <summary>
@@ -61,7 +66,7 @@ public class MongoDbXmlRepository : IXmlRepository
     /// </summary>
     public IReadOnlyCollection<XElement> GetAllElements()
     {
-        return _keys.Find(Filter.Empty).Project(document => document.Key).ToList().Select(XElement.Parse).ToList();
+        return _keyCollection.Find(Filter.Empty).Project(document => document.Key).ToList().Select(XElement.Parse).ToList();
     }
 
     /// <summary>
@@ -71,7 +76,7 @@ public class MongoDbXmlRepository : IXmlRepository
     /// <param name="friendlyName">A friendly name provided by the key manager. Not used in this method.</param>
     public void StoreElement(XElement element, string friendlyName)
     {
+        _keyCollection.InsertOne(new MongoDbXmlKey(element));
         RemoveRevokedKeys();
-        _keys.InsertOne(new MongoDbXmlKey(element));
     }
 }

@@ -56,11 +56,9 @@ public static class MongoDbDataProtectionBuilderExtensions
         {
             throw new ArgumentNullException(nameof(collection));
         }
-        builder.Services.Configure<KeyManagementOptions>(options =>
-        {
-            var mongoDbXmlRepository = new MongoDbXmlRepository(collection);
-            options.XmlRepository = mongoDbXmlRepository;
-        });
+        IKeyManager keyManager = null;
+        var mongoDbXmlRepository = new MongoDbXmlRepository(collection, () => keyManager ??= builder.Services.BuildServiceProvider().GetService<IKeyManager>());
+        builder.Services.Configure<KeyManagementOptions>(options => options.XmlRepository = mongoDbXmlRepository);
         return builder;
     }
 
@@ -68,27 +66,23 @@ public static class MongoDbDataProtectionBuilderExtensions
     /// Removes keys from the MongoDB repository after they expire or are revoked.
     /// </summary>
     /// <param name="builder">The builder instance to modify.</param>
-    /// <param name="keyManager">Optional: <see cref="IKeyManager"/> to use. Default is whatever key manager is currently registered at the time this method is called.</param>
     /// <returns>A reference to the <see cref="IDataProtectionBuilder"/> after this operation has completed.</returns>
     /// <exception cref="InvalidOperationException">PersistKeysToMongoDb must be called before this method.</exception>
     /// <remarks>
-    /// Cleanup will run after this method is called, and whenever the key manager calls <see cref="Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository.StoreElement"/>.
+    /// Cleanup will run whenever the key manager inserts a new key into the repository.<br/>
+    /// If a custom key manager is used, keys must have an "id" attribute on the top level element.
     /// </remarks>
-    /// <remarks>
-    /// If a custom key manager is used, it must be configured before calling this method and keys must have an "id" attribute on the top level element.
-    /// </remarks>
-    public static IDataProtectionBuilder AddKeyCleanup(this IDataProtectionBuilder builder, IKeyManager keyManager = null)
+    public static IDataProtectionBuilder AddKeyCleanup(this IDataProtectionBuilder builder)
     {
         if (builder is null)
         {
             throw new ArgumentNullException(nameof(builder));
         }
-        keyManager ??= builder.Services.BuildServiceProvider().GetService<IKeyManager>();
-        builder.Services.PostConfigure<KeyManagementOptions>(options =>
+        builder.Services.Configure<KeyManagementOptions>(options =>
         {
             if (options.XmlRepository is MongoDbXmlRepository mongodbXmlRepository)
             {
-                mongodbXmlRepository.SetKeyManager(keyManager);
+                mongodbXmlRepository.EnableKeyCleanup();
             }
             else
             {
