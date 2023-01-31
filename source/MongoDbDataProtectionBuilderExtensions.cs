@@ -4,6 +4,7 @@ using System;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 /// <summary>
@@ -56,9 +57,14 @@ public static class MongoDbDataProtectionBuilderExtensions
         {
             throw new ArgumentNullException(nameof(collection));
         }
-        IKeyManager keyManager = null;
-        var mongoDbXmlRepository = new MongoDbXmlRepository(collection, () => keyManager ??= builder.Services.BuildServiceProvider().GetService<IKeyManager>());
-        builder.Services.Configure<KeyManagementOptions>(options => options.XmlRepository = mongoDbXmlRepository);
+        builder.Services.AddSingleton<IConfigureOptions<KeyManagementOptions>>(services =>
+        {
+            return new ConfigureOptions<KeyManagementOptions>(options =>
+            {
+                IKeyManager keyManager = null;
+                options.XmlRepository = new MongoDbXmlRepository(collection, () => keyManager ??= services.GetRequiredService<IKeyManager>());
+            });
+        });
         return builder;
     }
 
