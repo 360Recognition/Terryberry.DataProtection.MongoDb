@@ -13,7 +13,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/360Recognition/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
     <PackageTags>dataprotection, mongodb</PackageTags>
-    <PackageReadmeFile>../README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <DocumentationFile>Terryberry.DataProtection.MongoDb.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -21,6 +21,14 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
   </ItemGroup>
 
 </Project>
