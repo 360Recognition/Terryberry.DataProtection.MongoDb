@@ -1,8 +1,6 @@
 Remove-Item *.nupkg
-Remove-Item *.snupkg
 if (Test-Path .\source\bin\Release) {
   Remove-Item .\source\bin\Release\*.nupkg
-  Remove-Item .\source\bin\Release\*.snupkg
 }
 
 # get version number
@@ -40,9 +38,7 @@ git push
 git push --tags
 
 # build project and publish packages
-dotnet pack -c Release -p:Version=$version -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+dotnet pack -c Release -p:Version=$version
 Copy-Item .\source\bin\Release\*.nupkg
-Copy-Item .\source\bin\Release\*.snupkg
 nuget push *.nupkg -Source "nuget.org"
 Remove-Item *.nupkg
-Remove-Item *.snupkg
