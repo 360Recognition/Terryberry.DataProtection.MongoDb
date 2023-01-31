@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,11 +7,11 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.2.0</Version>
     <Description>Data Protection APIs for persisting keys to MongoDB.</Description>
-    <Authors>Matthew DeJonge</Authors>
+    <Authors>Matthew DeJonge,Terryberry</Authors>
     <Company>Terryberry</Company>
     <Copyright>Terryberry</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/mhdejonge/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/360Recognition/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
     <PackageTags>dataprotection, mongodb</PackageTags>
     <DocumentationFile>Terryberry.DataProtection.MongoDb.xml</DocumentationFile>
   </PropertyGroup>
