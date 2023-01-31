@@ -13,6 +13,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/360Recognition/Terryberry.DataProtection.MongoDb</PackageProjectUrl>
     <PackageTags>dataprotection, mongodb</PackageTags>
+    <PackageReadmeFile>../README.md</PackageReadmeFile>
     <DocumentationFile>Terryberry.DataProtection.MongoDb.xml</DocumentationFile>
   </PropertyGroup>
 
